@@ -28,11 +28,6 @@ public class UserController {
 		this.service = service;
 	}
 	
-	@GetMapping("/ping")
-	public String checkServer() {
-		return "pong";
-	}
-	
 	@PostMapping()
 	public ResponseEntity<Object> addUser(@RequestBody User user) { 	
 		User data = service.addUser(user);
@@ -40,7 +35,7 @@ public class UserController {
 	}
 	
 	@GetMapping()
-	public ResponseEntity<Object> getUser() {
+	public ResponseEntity<Object> getUsers() {
 		List<User> users = service.getAllUsers();
 		return CollectionUtils.isEmpty(users) ?
 				ResponseEntity.ok().build() :
@@ -50,23 +45,18 @@ public class UserController {
 	@GetMapping("/{user_id}")
 	public ResponseEntity<Object> getUser(@PathVariable("user_id") Integer userId) {
 		User user = service.getUser(userId);
-		return user != null ? ResponseEntity.status(200).body(user) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		return ResponseEntity.status(200).body(user);
 	}
 	
 	@DeleteMapping("{user_id}")
 	public ResponseEntity<Object> removeUser(@PathVariable("user_id") Integer userId) {
-		if(service.removeUser(userId)) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-		} 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		service.removeUser(userId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
 	@PutMapping("{user_id}")
-	public ResponseEntity<Object> modifyUser(@PathVariable("user_id") Integer user_id, @RequestBody User user) {
-		User data = service.modifyUser(user_id, user);
-		if (data == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
+	public ResponseEntity<Object> modifyUser(@PathVariable("user_id") Integer userId, @RequestBody User user) {
+		User data = service.modifyUser(userId, user);
 		return ResponseEntity.status(HttpStatus.OK).body(data);
 	}
 }
