@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	Integer id;
-	String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Integer id;
+    String name;
 }

@@ -15,33 +15,33 @@ import com.github.userservice.repository.UserRepository;
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 public class UserRepositoryTest {
-	private final UserRepository repository;
-	private final TestEntityManager entityManager;
-	
-	@Autowired
-	UserRepositoryTest(UserRepository repository, TestEntityManager entityManager) {
-		this.repository = repository;
-		this.entityManager = entityManager;
-	}
-	
-	@Test
-	public void getUser_returnsUser() {
-		User user = new User();
-		user.setName("Jane");
-		User persistedUser = entityManager.persistFlushFind(user);
-		User userLookUp = repository.findById(persistedUser.getId()).get();
-		
-		assertThat(userLookUp.getId()).isEqualTo(persistedUser.getId());
-		assertThat(userLookUp.getName()).isEqualTo(persistedUser.getName());
-	}
-	
-	@Test
-	public void addUser_persistUser() {
-		User user = new User();
-		user.setName("John");
-		User persistedUser = repository.save(user);
+    private final UserRepository repository;
+    private final TestEntityManager entityManager;
 
-		assertThat(persistedUser.getName()).isEqualTo(user.getName());
-	}
+    @Autowired
+    UserRepositoryTest(UserRepository repository, TestEntityManager entityManager) {
+        this.repository = repository;
+        this.entityManager = entityManager;
+    }
+
+    @Test
+    public void getUser_returnsUser() {
+        User user = new User();
+        user.setName("Jane");
+        User persistedUser = entityManager.persistFlushFind(user);
+        User userLookUp = repository.findById(persistedUser.getId()).get();
+
+        assertThat(userLookUp.getId()).isEqualTo(persistedUser.getId());
+        assertThat(userLookUp.getName()).isEqualTo(persistedUser.getName());
+    }
+
+    @Test
+    public void addUser_persistUser() {
+        User user = new User();
+        user.setName("John");
+        User persistedUser = repository.save(user);
+
+        assertThat(persistedUser.getName()).isEqualTo(user.getName());
+    }
 
 }

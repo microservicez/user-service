@@ -21,42 +21,40 @@ import com.github.userservice.service.UserService;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-	private final UserService service;
-	
-	@Autowired
-	public UserController(UserService service) {
-		this.service = service;
-	}
-	
-	@PostMapping()
-	public ResponseEntity<Object> addUser(@RequestBody User user) { 	
-		User data = service.addUser(user);
-		return ResponseEntity.status(201).body(data);
-	}
-	
-	@GetMapping()
-	public ResponseEntity<Object> getUsers() {
-		List<User> users = service.getAllUsers();
-		return CollectionUtils.isEmpty(users) ?
-				ResponseEntity.ok().build() :
-				ResponseEntity.ok().body(users);
-	}
-	
-	@GetMapping("/{user_id}")
-	public ResponseEntity<Object> getUser(@PathVariable("user_id") Integer userId) {
-		User user = service.getUser(userId);
-		return ResponseEntity.status(200).body(user);
-	}
-	
-	@DeleteMapping("{user_id}")
-	public ResponseEntity<Object> removeUser(@PathVariable("user_id") Integer userId) {
-		service.removeUser(userId);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	}
-	
-	@PutMapping("{user_id}")
-	public ResponseEntity<Object> modifyUser(@PathVariable("user_id") Integer userId, @RequestBody User user) {
-		User data = service.modifyUser(userId, user);
-		return ResponseEntity.status(HttpStatus.OK).body(data);
-	}
+    private final UserService service;
+
+    @Autowired
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
+    @PostMapping()
+    public ResponseEntity<Object> addUser(@RequestBody User user) {
+        User data = service.addUser(user);
+        return ResponseEntity.status(201).body(data);
+    }
+
+    @GetMapping()
+    public ResponseEntity<Object> getUsers() {
+        List<User> users = service.getAllUsers();
+        return CollectionUtils.isEmpty(users) ? ResponseEntity.ok().build() : ResponseEntity.ok().body(users);
+    }
+
+    @GetMapping("/{user_id}")
+    public ResponseEntity<Object> getUser(@PathVariable("user_id") Integer userId) {
+        User user = service.getUser(userId);
+        return ResponseEntity.status(200).body(user);
+    }
+
+    @DeleteMapping("{user_id}")
+    public ResponseEntity<Object> removeUser(@PathVariable("user_id") Integer userId) {
+        service.removeUser(userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping("{user_id}")
+    public ResponseEntity<Object> modifyUser(@PathVariable("user_id") Integer userId, @RequestBody User user) {
+        User data = service.modifyUser(userId, user);
+        return ResponseEntity.status(HttpStatus.OK).body(data);
+    }
 }
