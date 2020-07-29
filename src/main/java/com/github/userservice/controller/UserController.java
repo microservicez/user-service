@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.userservice.dto.User;
 import com.github.userservice.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -28,32 +31,41 @@ public class UserController {
         this.service = service;
     }
 
+    @ApiOperation(value = "Adds User")
     @PostMapping()
     public ResponseEntity<Object> addUser(@RequestBody User user) {
         User data = service.addUser(user);
         return ResponseEntity.status(201).body(data);
     }
 
+    @ApiOperation(value = "Find all the users")
     @GetMapping()
     public ResponseEntity<Object> getUsers() {
         List<User> users = service.getAllUsers();
         return CollectionUtils.isEmpty(users) ? ResponseEntity.ok().build() : ResponseEntity.ok().body(users);
     }
 
+    @ApiOperation(value = "Find the user on the basis of user_id", notes = "Provide a user id to get the user details")
     @GetMapping("/{user_id}")
-    public ResponseEntity<Object> getUser(@PathVariable("user_id") Integer userId) {
+    public ResponseEntity<Object> getUser(
+            @ApiParam(value = "id of the user to be retrieved", required = true) @PathVariable("user_id") Integer userId) {
         User user = service.getUser(userId);
         return ResponseEntity.status(200).body(user);
     }
 
+    @ApiOperation(value = "remove a user on the basis of user_id", notes = "deletes the user from the system with the given user_id")
     @DeleteMapping("{user_id}")
-    public ResponseEntity<Object> removeUser(@PathVariable("user_id") Integer userId) {
+    public ResponseEntity<Object> removeUser(
+            @ApiParam(value = "id of the user to be removed", required = true) @PathVariable("user_id") Integer userId) {
         service.removeUser(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @ApiOperation(value = "modify a user")
     @PutMapping("{user_id}")
-    public ResponseEntity<Object> modifyUser(@PathVariable("user_id") Integer userId, @RequestBody User user) {
+    public ResponseEntity<Object> modifyUser(
+            @ApiParam(value = "id of the user to be modified", required = true) @PathVariable("user_id") Integer userId,
+            @RequestBody User user) {
         User data = service.modifyUser(userId, user);
         return ResponseEntity.status(HttpStatus.OK).body(data);
     }
